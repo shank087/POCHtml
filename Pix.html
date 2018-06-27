@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form name="myForm">
+ Name: <input type="text" name="fname" id="input1"><br>
+ <p id="errormessage"></p>
+ <input type="checkbox" name="browser" value="IE">IE<br>
+<input type="checkbox" name="browser" value="FF">FF<br>
+<input type="checkbox" name="browser" value="Chrome">Chrome<br>
+<input type="checkbox" name="mobile" id="mobile" value="mobile">Mobile  
+<select id="mobileoptions">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+</select>
+    
+    <input type="submit" value="Submit" id="send" disabled>
+    </form>
+
+
+
+</body>
+<script>
+    var browsers=document.getElementsByName("browser");
+    var mobile=document.getElementById("mobile");
+    var mobile_droplist=document.getElementById("mobileoptions");
+    mobile.addEventListener('change', (event) => {//when there is a even change on the mobile option checkbox by the user
+        if (event.target.checked) { //if mobile option is checked, disable other browser options
+            mobile_droplist.disabled=false;
+            for (let index = 0; index < browsers.length; index++) {
+                browsers[index].checked=false;
+                browsers[index].disabled=true;
+            }
+        }
+        else{ //else when mobile option is not checked, don't disable other options
+            mobile_droplist.disabled=true;
+            for (let index = 0; index < browsers.length; index++) {
+                browsers[index].disabled=false;
+            }
+        }
+    });
+
+   let count=0;
+   for (let index = 0; index < browsers.length; index++) { //for each of the browser options
+        browsers[index].addEventListener('change', (event) => { ///when there is a change event
+            if(event.target.checked){ //if the event is checked increase the count else decrease the count
+                count++;
+            }else{
+                count--;
+            }
+            if(count>0){ //if the count is > 0 then disable mobile option mode along with the drop list else keep it enabled
+                mobile.checked=false;
+                mobile.disabled=true;
+                mobile_droplist.disabled=true;
+            }
+            else{
+                mobile.disabled=false;
+                mobile_droplist.disabled=false;
+            }
+        });       
+    }
+
+        let flag=false;
+        document.getElementById("input1").addEventListener("keyup", function() {
+            var nameInput = document.getElementById("input1").value;
+            if(nameInput!=""){
+                flag=true;
+            }
+            else{
+                flag=false;
+            }
+        });    
+        alert(flag)
+        if (flag==true && (count>0 || mobile.checked)) {
+            document.getElementById('send').removeAttribute("disabled");
+        } else {
+            document.getElementById('send').setAttribute("disabled", null);
+        }
+        
+    
+</script>
+</html>
